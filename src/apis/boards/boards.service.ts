@@ -2,7 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { Board } from './entities/board.entity';
-import { IBoardsServiceCreate, IBoardsServiceFindOne } from './interfaces/boards-service.interface';
+import { IBoardsServiceCreate, IBoardsServiceDelete, IBoardsServiceFindOne, IBoardsServiceUpdate } from './interfaces/boards-service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -21,16 +21,33 @@ export class BoardsService {
         return this.boardsRepository.findOne({ where: { id: boardId }});
     }
 
-    create({ createBoardInput }: IBoardsServiceCreate): string {
-        // 1. 브라우저에서 보내준 데이터 확인하기
-        console.log(createBoardInput.writer);
-        console.log(createBoardInput.title);
-        console.log(createBoardInput.contents);
+    async create({ createBoardInput }: IBoardsServiceCreate): Promise<Board> {
+        const result = await this.boardsRepository.save({...createBoardInput}); 
 
-        // 2. 데이터를 등록하는 로직 => DB에 접속해서 데이터 저장하기
-        //
-
-        // 3. DB에 저장이 잘 됐으면, 결과를 브라우저에 응답(response) 주기
-        return '게시물 등록에 성공하였습니다!!';
+        return result; 
     }
+
+    async update({
+        boardId,
+        updateBoardInput,
+    }: IBoardsServiceUpdate): Promise<Board> {
+        const product = await this.findOne({ boardId });
+
+        const result = this.boardsRepository.save({
+            ...product, 
+            ...updateBoardInput,
+        });
+        return result;
+    }
+
+    async delete({ boardId }: IBoardsServiceDelete):Promise<boolean> {
+
+        const result = await this.boardsRepository.softDelete({
+            id: boardId,
+        }); 
+        return result.affected ? true : false;  
+    }
+
+
+    
 }
