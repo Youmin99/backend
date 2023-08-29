@@ -14,13 +14,11 @@ export class UsersResolver {
     ) {}
 
     @UseGuards(GqlAuthAccessGuard)
-    @Query(() => String)
+    @Query(() => User)
     fetchUser(
         @Context() context: IContext, //
-    ): string {
-
-        console.log(context.req.user);
-        return '';
+    ): Promise<User> {
+        return this.usersService.check( context.req.user.id );;
     }
 
     @Mutation(() => User)

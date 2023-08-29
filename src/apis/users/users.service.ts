@@ -38,4 +38,8 @@ export class UsersService {
             phone,
         });
     }
+
+   async check({userId}:any){
+    return await this.usersRepository.findOne({ where: { id: userId }});
+    }
 }
