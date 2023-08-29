@@ -3,19 +3,21 @@
 version: '3.7'
 
 services:
-    my-backend:
+    post-backend:
         build:
             context: .
             dockerfile: Dockerfile
         ports:
             - 3000:3000
+        volumes: 
+            - ./src:/myfolder/src
         env_file:
             - ./.env.docker
 
-    my-database:
+    post-database:
         image: mysql:latest
         environment:
             MYSQL_DATABASE: 'mydocker'
             MYSQL_ROOT_PASSWORD: '0000'
         ports:
-            - 3301:3306
+            - 3306:3306
