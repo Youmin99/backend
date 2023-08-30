@@ -9,6 +9,7 @@ import {
     IUsersServiceFindOneByEmail,
 } from './interfaces/users-service.interface';
 import * as bcrypt from 'bcrypt';
+import { IContext } from 'src/commons/interfaces/context';
 
 @Injectable()
 export class UsersService {
@@ -39,7 +40,7 @@ export class UsersService {
         });
     }
 
-   async check({userId}:any){
-    return await this.usersRepository.findOne({ where: { id: userId }});
+   async check(user:IContext){
+    return await this.usersRepository.findOne({ where: { id: user.req.user.id }});
     }
 }
