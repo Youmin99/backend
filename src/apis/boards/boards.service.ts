@@ -21,10 +21,12 @@ export class BoardsService {
         return this.boardsRepository.findOne({ where: { id: boardId }});
     }
 
-    async create({ createBoardInput }: IBoardsServiceCreate): Promise<Board> {
-        const result = await this.boardsRepository.save({...createBoardInput}); 
+    boardsCount(): Promise<number> {
+        return this.boardsRepository.count();
+    }
 
-        return result; 
+    async create({ createBoardInput }: IBoardsServiceCreate): Promise<Board> {
+        return await this.boardsRepository.save({...createBoardInput});  
     }
 
     async update({

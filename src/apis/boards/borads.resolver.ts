@@ -1,5 +1,5 @@
 // boards.resolver.ts
-import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Query, Resolver, Mutation, Args, Int } from '@nestjs/graphql';
 import { BoardsService } from './boards.service';
 import { CreateBoardInput } from './dto/create-board.input';
 import { Board } from './entities/board.entity';
@@ -17,6 +17,11 @@ export class BoardsResolver {
     @Query(() => Board, { nullable: true })
     fetchBoard( @Args('boardId') boardId: string):  Promise<Board> {
         return this.boardsService.findOne({boardId});
+    }
+
+    @Query(() => Int, { nullable: true })
+    fetchBoardsCount():  Promise<number> {
+        return this.boardsService.boardsCount();
     }
 
     @Mutation(() => Board)
