@@ -1,5 +1,6 @@
 // boards-services.interface.ts
 
+import { write } from 'fs';
 import { CreateBoardInput } from '../dto/create-board.input';
 import { UpdateBoardInput } from '../dto/update-board.input';
 
@@ -8,7 +9,7 @@ export interface IBoardsServiceCreate {
 }
 
 export interface IBoardsServiceFindOne {
-    boardId: string;
+    boardId: string | CreateBoardInput['writer'];
 }
 
 export interface IBoardsServiceDelete {

@@ -7,16 +7,19 @@ import { BoardsModule } from './apis/boards/boards.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './apis/users/users.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { BoardsCommentModule } from './apis/boardsComment/boardsComment.module';
 
 @Module({
     imports: [
-        AuthModule, // 
+        AuthModule, //
         BoardsModule,
         UsersModule,
+        BoardsCommentModule,
         ConfigModule.forRoot(),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
             autoSchemaFile: 'src/commons/graphql/schema.gql',
+            context: ({ req, res }) => ({ req, res }),
         }),
         TypeOrmModule.forRoot({
             type: process.env.DATABASE_TYPE as 'mysql',
