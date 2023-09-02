@@ -15,7 +15,7 @@ export class UsersResolver {
 
     @UseGuards(GqlAuthGuard('access'))
     @Query(() => User)
-    fetchUser(
+    fetchUserLoggedIn(
         @Context() context: IContext, //
     ): Promise<User> {
         return this.usersService.check( context );;
@@ -30,4 +30,25 @@ export class UsersResolver {
     ): Promise<User> {
         return this.usersService.create({ email, password, name, phone });
     }
+
+    @UseGuards(GqlAuthGuard('access'))
+    @Mutation(() => User)
+    async updateUser(
+        @Args('email') email: string,
+        @Args('password') password: string,
+        @Args('name') name: string,
+        @Args({ name: 'phone', type: () => Int }) phone: number,
+    ): Promise<User> {
+        return this.usersService.update({ email, password, name, phone });
+    }
+
+    @UseGuards(GqlAuthGuard('access'))
+    @Mutation(() => Boolean)
+    deleteUser(
+        @Args('email') email: string,
+        @Args('password') password: string,
+    ): Promise<boolean> {
+        return this.usersService.delete({ email,password });
+    }
+
 }
