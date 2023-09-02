@@ -41,14 +41,14 @@ export class AuthService {
     getAccessToken({ user }: IAuthServiceGetAccessToken): string {
         return this.jwtService.sign(
             { sub: user.id },
-            { secret: 'mypassword', expiresIn: '1h' },
+            { secret: process.env.JWT_ACCESS_TOKEN, expiresIn: '20s' },
         );
     }
 
     setRefreshToken({ user, context }: IAuthServiceSetRefreshToken): void {
         const refreshToken = this.jwtService.sign(
           { sub: user.id },
-          { secret: 'myrefresh', expiresIn: '2w' },
+          { secret: process.env.JWT_REFRESH_TOKEN, expiresIn: '2w' },
         );
 
     context.res.setHeader(
@@ -60,4 +60,3 @@ export class AuthService {
     }
 
 }
-    // restoreAccessToken
