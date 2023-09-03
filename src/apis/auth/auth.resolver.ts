@@ -8,24 +8,29 @@ import { GqlAuthGuard } from './guards/gql-auth.guard';
 
 @Resolver()
 export class AuthResolver {
-  constructor(
-    private readonly authService: AuthService, //
-  ) {}
+    constructor(
+        private readonly authService: AuthService, //
+    ) {}
 
-  @Mutation(() => String)
-  async login(
-    @Args('email') email: string, //
-    @Args('password') password: string,
-    @Context() context: IContext
-  ): Promise<string> {
-    return this.authService.login({ email, password,context });
-  }
+    @Mutation(() => String)
+    async loginUser(
+        @Args('email') email: string, //
+        @Args('password') password: string,
+        @Context() context: IContext,
+    ): Promise<string> {
+        return this.authService.login({ email, password, context });
+    }
 
-  @UseGuards(GqlAuthGuard('refresh'))
-  @Mutation(() => String)
-  restoreAcessToken(
-    @Context() context: IContext, //
-  ): string {
-    return this.authService.restoreAccessToken({ user: context.req.user });
-  }
+    @Mutation(() => Boolean)
+    async logoutUser(@Context() context: IContext): Promise<boolean> {
+        return this.authService.loginout({ context });
+    }
+
+    @UseGuards(GqlAuthGuard('refresh'))
+    @Mutation(() => String)
+    restoreAcessToken(
+        @Context() context: IContext, //
+    ): string {
+        return this.authService.restoreAccessToken({ user: context.req.user });
+    }
 }
