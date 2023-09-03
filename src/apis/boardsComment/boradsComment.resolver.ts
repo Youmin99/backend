@@ -43,5 +43,4 @@ export class BoardsCommentResolver {
         return this.boardCommentsService.delete({ password, boardCommentId });
     }
 
-    // fetchBoardsWithDeleted restoreBoard
 }

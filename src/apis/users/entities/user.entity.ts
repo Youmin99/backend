@@ -6,22 +6,25 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  @Field(() => String)
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    @Field(() => String)
+    id: string;
 
-  @Column()
-  @Field(() => String)
-  email: string;
+    @Column()
+    @Field(() => String)
+    email: string;
 
-  @Column()
-  password: string;
+    @Column()
+    password: string;
 
-  @Column()
-  @Field(() => String)
-  name: string;
+    @Column()
+    @Field(() => String)
+    name: string;
 
-  @Column()
-  @Field(() => Int)
-  phone: number;
+    @Column()
+    phone: number;
+
+    @Column({ default: false })
+    @Field(() => Boolean)
+    isDeleted: boolean;
 }

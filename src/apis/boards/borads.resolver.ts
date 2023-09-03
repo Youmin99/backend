@@ -19,7 +19,7 @@ export class BoardsResolver {
         return this.boardsService.findOne({boardId});
     }
 
-    @Query(() => Int, { nullable: true })
+    @Query(() => Number, { nullable: true })
     fetchBoardsCount():  Promise<number> {
         return this.boardsService.boardsCount();
     }
@@ -30,9 +30,9 @@ export class BoardsResolver {
     ):  Promise<Board> {
         return this.boardsService.create({ createBoardInput });
     }
-
+ 
     @Mutation(() => Board)
-    async updateProduct(
+    async updateBoard(
         @Args('boardId') boardId: string,
         @Args('updateBoardInput') updateBoardInput: UpdateBoardInput,
     ): Promise<Board> {
@@ -41,10 +41,12 @@ export class BoardsResolver {
 
 
     @Mutation(() => Boolean)
-    deleteProduct(
+    deleteBoard(
         @Args('boardId') boardId: string, //
     ): Promise<boolean> {
         return this.boardsService.delete({ boardId });
     }
+
+    // fetchBoardsWithDeleted restoreBoard
     
 }
