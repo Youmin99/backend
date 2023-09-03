@@ -10,6 +10,8 @@ export interface IBoardsServiceCreate {
 
 export interface IBoardsServiceFindOne {
     boardId: string | CreateBoardInput['writer'];
+
+
 }
 
 export interface IBoardsServiceDelete {

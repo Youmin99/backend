@@ -10,20 +10,27 @@ import {
 } from './interfaces/boards-service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { BoardAddressService } from '../boardsAddress/boardsAddress.service';
 
 @Injectable()
 export class BoardsService {
     constructor(
         @InjectRepository(Board)
         private readonly boardsRepository: Repository<Board>, //
+        private readonly boardAddressService: BoardAddressService,
     ) {}
 
     findAll(): Promise<Board[]> {
-        return this.boardsRepository.find();
+        return this.boardsRepository.find({
+            relations: ['boardAddress'],
+        });
     }
 
     findOne({ boardId }: IBoardsServiceFindOne): Promise<Board> {
-        return this.boardsRepository.findOne({ where: { id: boardId } });
+        return this.boardsRepository.findOne({
+            where: { id: boardId },
+            relations: ['boardAddress'],
+        });
     }
 
     boardsCount(): Promise<number> {
@@ -31,7 +38,16 @@ export class BoardsService {
     }
 
     async create({ createBoardInput }: IBoardsServiceCreate): Promise<Board> {
-        return await this.boardsRepository.save({ ...createBoardInput });
+        const { boardAddress, ...product } = createBoardInput;
+
+        const result = await this.boardAddressService.create({
+            ...boardAddress,
+        });
+
+        return await this.boardsRepository.save({
+            ...product,
+            boardAddress: result,
+        });
     }
 
     async update({

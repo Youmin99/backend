@@ -1,14 +1,20 @@
 // board.entity.ts
 
 import { Field, ObjectType } from '@nestjs/graphql';
+import { BoardAddress } from 'src/apis/boardsAddress/entities/boardAddress.entity';
 import { BoardComment } from 'src/apis/boardsComment/entities/boardComment.entity';
 import { User } from 'src/apis/users/entities/user.entity';
 import {
     Column,
+    CreateDateColumn,
+    DeleteDateColumn,
     Entity,
+    JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -27,7 +33,6 @@ export class Board {
     title: string;
 
     @Column()
-    @Field(() => String)
     password: string;
 
     @Column()
@@ -41,6 +46,20 @@ export class Board {
     @ManyToOne(() => User)
     @Field(() => User)
     user: User;
+
+    @JoinColumn()
+    @OneToOne(() => BoardAddress)
+    @Field(() => BoardAddress)
+    boardAddress: BoardAddress;
+
+    @CreateDateColumn()
+    createdAt: Date;
+
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    @DeleteDateColumn()
+    deletedAt: Date;
 
     @OneToMany(() => BoardComment, (boardComments) => boardComments.board)
     @Field(() => [BoardComment])

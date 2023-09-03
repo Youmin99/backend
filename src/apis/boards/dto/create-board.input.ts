@@ -1,6 +1,7 @@
 // create-board.input.ts
 
 import { InputType, Field } from '@nestjs/graphql';
+import { BoardAddressInput } from 'src/apis/boardsAddress/dto/boardsAddress.input';
 
 @InputType()
 export class CreateBoardInput {
@@ -18,4 +19,7 @@ export class CreateBoardInput {
 
     @Field(() => String)
     youtubeUrl: string;
+
+    @Field(() => BoardAddressInput)
+    boardAddress: BoardAddressInput;
 }
