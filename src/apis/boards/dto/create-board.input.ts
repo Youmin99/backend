@@ -17,9 +17,9 @@ export class CreateBoardInput {
     @Field(() => String)
     contents: string;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     youtubeUrl: string;
 
-    @Field(() => BoardAddressInput)
+    @Field(() => BoardAddressInput, { nullable: true })
     boardAddress: BoardAddressInput;
 }

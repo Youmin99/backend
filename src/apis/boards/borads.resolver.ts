@@ -9,28 +9,28 @@ import { UpdateBoardInput } from './dto/update-board.input';
 export class BoardsResolver {
     constructor(private readonly boardsService: BoardsService) {}
 
-    @Query(() => [Board], { nullable: true })
-    fetchBoards():  Promise<Board[]> {
+    @Query(() => [Board])
+    fetchBoards(): Promise<Board[]> {
         return this.boardsService.findAll();
     }
 
-    @Query(() => Board, { nullable: true })
-    fetchBoard( @Args('boardId') boardId: string):  Promise<Board> {
-        return this.boardsService.findOne({boardId});
+    @Query(() => Board)
+    fetchBoard(@Args('boardId') boardId: string): Promise<Board> {
+        return this.boardsService.findOne({ boardId });
     }
 
-    @Query(() => Number, { nullable: true })
-    fetchBoardsCount():  Promise<number> {
+    @Query(() => Int)
+    fetchBoardsCount(): Promise<number> {
         return this.boardsService.boardsCount();
     }
 
     @Mutation(() => Board)
     createBoard(
         @Args('createBoardInput') createBoardInput: CreateBoardInput,
-    ):  Promise<Board> {
+    ): Promise<Board> {
         return this.boardsService.create({ createBoardInput });
     }
- 
+
     @Mutation(() => Board)
     async updateBoard(
         @Args('boardId') boardId: string,
@@ -38,7 +38,6 @@ export class BoardsResolver {
     ): Promise<Board> {
         return this.boardsService.update({ boardId, updateBoardInput });
     }
-
 
     @Mutation(() => Boolean)
     deleteBoard(
@@ -48,5 +47,4 @@ export class BoardsResolver {
     }
 
     // fetchBoardsWithDeleted restoreBoard
-    
 }

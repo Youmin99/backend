@@ -23,6 +23,7 @@ export class BoardsCommentService {
     }: IBoardsCommentServiceCreate): Promise<BoardComment> {
         return await this.boardCommentsRepository.save({
             ...createBoardCommentInput,
+            boardId,
         });
     }
 

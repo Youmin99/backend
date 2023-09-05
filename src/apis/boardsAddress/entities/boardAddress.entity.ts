@@ -5,18 +5,17 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 export class BoardAddress {
     @PrimaryGeneratedColumn('uuid')
-    @Field(() => String)
     id: string;
 
     @Column()
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
+    zipcode: string;
+
+    @Column()
+    @Field(() => String, { nullable: true })
     address: string;
 
     @Column()
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     addressDetail: string;
-
-    @Column()
-    @Field(() => Date)
-    meetingTime: Date;
 }

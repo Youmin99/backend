@@ -15,5 +15,4 @@ export class CreateBoardCommentInput {
 
     @Field(() => Float)
     rating: number;
-
 }

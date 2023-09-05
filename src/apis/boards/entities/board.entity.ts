@@ -40,16 +40,16 @@ export class Board {
     contents: string;
 
     @Column()
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     youtubeUrl: string;
 
     @ManyToOne(() => User)
-    @Field(() => User)
+    @Field(() => User, { nullable: true })
     user: User;
 
     @JoinColumn()
     @OneToOne(() => BoardAddress)
-    @Field(() => BoardAddress)
+    @Field(() => BoardAddress, { nullable: true })
     boardAddress: BoardAddress;
 
     @CreateDateColumn()
@@ -62,6 +62,5 @@ export class Board {
     deletedAt: Date;
 
     @OneToMany(() => BoardComment, (boardComments) => boardComments.board)
-    @Field(() => [BoardComment])
     boardComments: BoardComment[];
 }

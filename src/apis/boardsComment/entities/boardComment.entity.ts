@@ -44,6 +44,5 @@ export class BoardComment {
     deletedAt: Date;
 
     @ManyToOne(() => Board)
-    @Field(() => Board)
     board: Board;
 }
