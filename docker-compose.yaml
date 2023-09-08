@@ -8,7 +8,7 @@ services:
             context: .
             dockerfile: Dockerfile
         ports:
-            - 3000:3000
+            - 5000:3000
         volumes: 
             - ./src:/myfolder/src
         env_file:
@@ -20,4 +20,4 @@ services:
             MYSQL_DATABASE: 'mydocker'
             MYSQL_ROOT_PASSWORD: '0000'
         ports:
-            - 3306:3306
+            - 3300:3306

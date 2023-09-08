@@ -8,6 +8,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './apis/users/users.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { BoardsCommentModule } from './apis/boardsComment/boardsComment.module';
+import { FilesModule } from './apis/file/files.module';
+import { JwtAccessStrategy } from './apis/auth/strategies/jwt-access.strategy';
+import { JwtRefreshStrategy } from './apis/auth/strategies/jwt-refresh.strategy';
 
 @Module({
     imports: [
@@ -15,6 +18,7 @@ import { BoardsCommentModule } from './apis/boardsComment/boardsComment.module';
         BoardsModule,
         UsersModule,
         BoardsCommentModule,
+        FilesModule,
         ConfigModule.forRoot(),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
@@ -32,6 +36,11 @@ import { BoardsCommentModule } from './apis/boardsComment/boardsComment.module';
             synchronize: true,
             logging: true,
         }),
+    ],
+
+    providers: [
+        JwtAccessStrategy, //
+        JwtRefreshStrategy,
     ],
 })
 export class AppModule {}
