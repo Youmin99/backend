@@ -66,15 +66,19 @@ export class BoardsService {
         if (!board)
             throw new UnprocessableEntityException('there is no board.');
 
-        const isAuth = await bcrypt.compare(password, user.password);
-        if (!isAuth) throw new UnprocessableEntityException('wrong password.');
+        if (board.password !== password)
+            throw new UnprocessableEntityException('wrong password.');
 
-        if (product.password === password)
-            const result = this.boardsRepository.save({
-                ...product,
-                ...updateBoardInput,
-            });
-        return result;
+        const { boardAddress, ...rest } = updateBoardInput;
+
+        const boardaddress = await this.boardAddressService.update({
+            ...boardAddress,
+        });
+
+        return await this.boardsRepository.save({
+            ...board,
+            ...updateBoardInput,
+        });
     }
 
     async delete({ boardId }: IBoardsServiceDelete): Promise<boolean> {

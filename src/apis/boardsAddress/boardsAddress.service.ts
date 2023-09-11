@@ -16,4 +16,10 @@ export class BoardAddressService {
             ...boardAddressInput,
         });
     }
+
+    update({ ...boardAddressInput }: BoardAddressInput) {
+        return this.boardsAddressRepository.save({
+            ...boardAddressInput,
+        });
+    }
 }
