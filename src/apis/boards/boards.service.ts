@@ -28,7 +28,7 @@ export class BoardsService {
 
     findOne({ boardId }: IBoardsServiceFindOne): Promise<Board> {
         return this.boardsRepository.findOne({
-            where: { id: boardId },
+            where: { _id: boardId },
             relations: ['boardAddress'],
         });
     }
@@ -65,7 +65,7 @@ export class BoardsService {
 
     async delete({ boardId }: IBoardsServiceDelete): Promise<boolean> {
         const result = await this.boardsRepository.softDelete({
-            id: boardId,
+            _id: boardId,
         });
         return result.affected ? true : false;
     }

@@ -17,7 +17,7 @@ import {
 export class BoardComment {
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id: string;
+    _id: string;
 
     @Column()
     @Field(() => String)
@@ -35,6 +35,7 @@ export class BoardComment {
     rating: number;
 
     @CreateDateColumn()
+    @Field(() => Date)
     createdAt: Date;
 
     @UpdateDateColumn()

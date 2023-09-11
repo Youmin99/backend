@@ -6,6 +6,6 @@ import { BoardAddress } from '../entities/boardAddress.entity';
 @InputType()
 export class BoardAddressInput extends OmitType(
     BoardAddress,
-    ['id'],
+    ['_id'],
     InputType,
 ) {}

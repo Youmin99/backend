@@ -5,7 +5,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 export class BoardAddress {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    _id: string;
 
     @Column()
     @Field(() => String, { nullable: true })

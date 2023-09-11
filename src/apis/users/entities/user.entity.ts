@@ -15,7 +15,7 @@ import {
 export class User {
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id: string;
+    _id: string;
 
     @Column()
     @Field(() => String)
