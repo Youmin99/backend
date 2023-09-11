@@ -5,6 +5,7 @@ import { BoardComment } from './entities/boardComment.entity';
 import {
     IBoardsCommentServiceCreate,
     IBoardsCommentServiceDelete,
+    IBoardsCommentServiceFinds,
     IBoardsCommentServiceUpdate,
 } from './interfaces/boardsComment-service.interface';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +17,19 @@ export class BoardsCommentService {
         @InjectRepository(BoardComment)
         private readonly boardCommentsRepository: Repository<BoardComment>, //
     ) {}
+
+    async findAll({
+        boardId,
+        page = 1,
+    }: IBoardsCommentServiceFinds): Promise<BoardComment[]> {
+        const take = 10;
+
+        return this.boardCommentsRepository.find({
+            where: { _id: boardId },
+            take,
+            skip: (page - 1) * take,
+        });
+    }
 
     async create({
         boardId,
@@ -33,7 +47,7 @@ export class BoardsCommentService {
         updateBoardCommentInput,
     }: IBoardsCommentServiceUpdate): Promise<BoardComment> {
         const boardComment = await this.boardCommentsRepository.findOne({
-            where: { id: boardCommentId },
+            where: { _id: boardCommentId },
         });
 
         if (password !== boardComment.password)
@@ -51,14 +65,14 @@ export class BoardsCommentService {
         boardCommentId,
     }: IBoardsCommentServiceDelete): Promise<boolean> {
         const boardComment = await this.boardCommentsRepository.findOne({
-            where: { id: boardCommentId },
+            where: { _id: boardCommentId },
         });
 
         if (password !== boardComment.password)
             throw new UnprocessableEntityException('wrong password.');
 
         const result = await this.boardCommentsRepository.softDelete({
-            id: boardCommentId,
+            _id: boardCommentId,
         });
 
         return result.affected ? true : false;

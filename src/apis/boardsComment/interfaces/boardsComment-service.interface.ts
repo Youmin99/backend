@@ -8,6 +8,11 @@ export interface IBoardsCommentServiceCreate {
     createBoardCommentInput: CreateBoardCommentInput;
 }
 
+export interface IBoardsCommentServiceFinds {
+    boardId: string;
+    page: number;
+}
+
 export interface IBoardsCommentServiceFindOne {
     boardId: string;
 }

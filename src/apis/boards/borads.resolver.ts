@@ -10,8 +10,11 @@ export class BoardsResolver {
     constructor(private readonly boardsService: BoardsService) {}
 
     @Query(() => [Board])
-    fetchBoards(): Promise<Board[]> {
-        return this.boardsService.findAll();
+    fetchBoards(
+        @Args('search') search: string,
+        @Args('page') page: number,
+    ): Promise<Board[]> {
+        return this.boardsService.findAll({ search, page });
     }
 
     @Query(() => Board)
@@ -20,8 +23,8 @@ export class BoardsResolver {
     }
 
     @Query(() => Int)
-    fetchBoardsCount(): Promise<number> {
-        return this.boardsService.boardsCount();
+    fetchBoardsCount(@Args('search') search: string): Promise<number> {
+        return this.boardsService.boardsCount({ search });
     }
 
     @Mutation(() => Board)
@@ -34,9 +37,14 @@ export class BoardsResolver {
     @Mutation(() => Board)
     async updateBoard(
         @Args('boardId') boardId: string,
+        @Args('password') password: string,
         @Args('updateBoardInput') updateBoardInput: UpdateBoardInput,
     ): Promise<Board> {
-        return this.boardsService.update({ boardId, updateBoardInput });
+        return this.boardsService.update({
+            boardId,
+            password,
+            updateBoardInput,
+        });
     }
 
     @Mutation(() => Boolean)
