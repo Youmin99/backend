@@ -7,17 +7,22 @@ import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
 import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Token } from './entities/Token.entity';
 
 @Module({
-  imports: [
-    JwtModule.register({}),
-    UsersModule, //
-  ],
-  providers: [
-    JwtAccessStrategy,
-    JwtRefreshStrategy,
-    AuthResolver, //
-    AuthService,
-  ],
+    imports: [
+        JwtModule.register({}),
+        UsersModule, //
+        TypeOrmModule.forFeature([
+            Token, //
+        ]),
+    ],
+    providers: [
+        JwtAccessStrategy,
+        JwtRefreshStrategy,
+        AuthResolver, //
+        AuthService,
+    ],
 })
 export class AuthModule {}

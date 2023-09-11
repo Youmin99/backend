@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { IContext } from 'src/commons/interfaces/context';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from './guards/gql-auth.guard';
+import { Token } from './entities/Token.entity';
 
 @Resolver()
 export class AuthResolver {
@@ -12,12 +13,12 @@ export class AuthResolver {
         private readonly authService: AuthService, //
     ) {}
 
-    @Mutation(() => String)
+    @Mutation(() => Token)
     async loginUser(
         @Args('email') email: string, //
         @Args('password') password: string,
         @Context() context: IContext,
-    ): Promise<string> {
+    ): Promise<Token> {
         return this.authService.login({ email, password, context });
     }
 
@@ -27,10 +28,10 @@ export class AuthResolver {
     }
 
     @UseGuards(GqlAuthGuard('refresh'))
-    @Mutation(() => String)
+    @Mutation(() => Token)
     restoreAcessToken(
         @Context() context: IContext, //
-    ): string {
+    ): Promise<Token> {
         return this.authService.restoreAccessToken({ user: context.req.user });
     }
 }

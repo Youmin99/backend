@@ -12,6 +12,9 @@ import {
     IAuthServiceSetRefreshToken,
 } from './interfaces/auth-service.interface';
 import * as bcrypt from 'bcrypt';
+import { Token } from './entities/Token.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
@@ -19,13 +22,16 @@ export class AuthService {
         private readonly jwtService: JwtService, //
 
         private readonly usersService: UsersService,
+
+        @InjectRepository(Token)
+        private readonly tokensRepository: Repository<Token>,
     ) {}
 
     async login({
         email,
         password,
         context,
-    }: IAuthServiceLogin): Promise<string> {
+    }: IAuthServiceLogin): Promise<Token> {
         const user = await this.usersService.findOneByEmail({ email });
 
         if (!user) throw new UnprocessableEntityException('there is no email.');
@@ -35,7 +41,9 @@ export class AuthService {
 
         this.setRefreshToken({ user, context });
 
-        return this.getAccessToken({ user });
+        return await this.tokensRepository.save({
+            accessToken: this.getAccessToken({ user }),
+        });
     }
 
     async loginout({ context }: IAuthServiceLoginOut): Promise<boolean> {
@@ -44,20 +52,24 @@ export class AuthService {
         return true;
     }
 
-    restoreAccessToken({ user }: IAuthServiceRestoreAccessToken): string {
-        return this.getAccessToken({ user });
+    async restoreAccessToken({
+        user,
+    }: IAuthServiceRestoreAccessToken): Promise<Token> {
+        return await this.tokensRepository.save({
+            accessToken: this.getAccessToken({ user }),
+        });
     }
 
     getAccessToken({ user }: IAuthServiceGetAccessToken): string {
         return this.jwtService.sign(
-            { sub: user.id },
+            { sub: user._id },
             { secret: process.env.JWT_ACCESS_TOKEN, expiresIn: '20s' },
         );
     }
 
     setRefreshToken({ user, context }: IAuthServiceSetRefreshToken): void {
         const refreshToken = this.jwtService.sign(
-            { sub: user.id },
+            { sub: user._id },
             { secret: process.env.JWT_REFRESH_TOKEN, expiresIn: '2w' },
         );
 
@@ -66,7 +78,10 @@ export class AuthService {
             `refreshToken=${refreshToken}; path=/;`,
         );
         // context.res.setHeader('set-Cookie', `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly`);
-        // context.res.setHeader('Access-Control-Allow-Origin', 'https://myfrontsite.com');
+        // context.res.setHeader(
+        //     'Access-Control-Allow-Origin',
+        //     'http://localhost:3000',
+        // );
     }
 
     finishRefreshToken({ context }: IAuthServiceFinishRefreshToken): void {

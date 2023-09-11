@@ -22,4 +22,7 @@ export class CreateBoardInput {
 
     @Field(() => BoardAddressInput, { nullable: true })
     boardAddress: BoardAddressInput;
+
+    @Field(() => [String], { nullable: true })
+    images: string[];
 }
