@@ -71,7 +71,7 @@ export class BoardsService {
 
         const { boardAddress, ...rest } = updateBoardInput;
 
-        const boardaddress = await this.boardAddressService.update({
+        await this.boardAddressService.update({
             ...boardAddress,
         });
 

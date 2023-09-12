@@ -4,6 +4,7 @@ import { BoardsService } from './boards.service';
 import { CreateBoardInput } from './dto/create-board.input';
 import { Board } from './entities/board.entity';
 import { UpdateBoardInput } from './dto/update-board.input';
+import { type } from 'os';
 
 @Resolver()
 export class BoardsResolver {
@@ -11,8 +12,8 @@ export class BoardsResolver {
 
     @Query(() => [Board])
     fetchBoards(
-        @Args('search') search: string,
-        @Args('page') page: number,
+        @Args('search', { nullable: true }) search: string,
+        @Args({ name: 'page', type: () => Int, nullable: true }) page: number,
     ): Promise<Board[]> {
         return this.boardsService.findAll({ search, page });
     }
@@ -23,7 +24,9 @@ export class BoardsResolver {
     }
 
     @Query(() => Int)
-    fetchBoardsCount(@Args('search') search: string): Promise<number> {
+    fetchBoardsCount(
+        @Args('search', { nullable: true }) search: string,
+    ): Promise<number> {
         return this.boardsService.boardsCount({ search });
     }
 

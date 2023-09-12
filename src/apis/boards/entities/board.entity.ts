@@ -1,6 +1,7 @@
 // board.entity.ts
 
 import { Field, ObjectType } from '@nestjs/graphql';
+import { FileUpload } from 'graphql-upload';
 import { BoardAddress } from 'src/apis/boardsAddress/entities/boardAddress.entity';
 import { BoardComment } from 'src/apis/boardsComment/entities/boardComment.entity';
 import { User } from 'src/apis/users/entities/user.entity';
@@ -22,7 +23,7 @@ import {
 export class Board {
     @PrimaryGeneratedColumn('uuid')
     @Field(() => String)
-    id: string;
+    _id: string;
 
     @Column()
     @Field(() => String)
@@ -52,7 +53,11 @@ export class Board {
     @Field(() => BoardAddress, { nullable: true })
     boardAddress: BoardAddress;
 
+    @Field(() => [String], { nullable: true })
+    images?: string[];
+
     @CreateDateColumn()
+    @Field(() => Date)
     createdAt: Date;
 
     @UpdateDateColumn()

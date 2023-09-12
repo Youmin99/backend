@@ -1,22 +1,20 @@
 // users-service.interface.ts
 
-export interface IUsersServiceCreate {
-    email: string;
-    password: string;
-    name: string;
-    phone: number;
-  }
-  
-  export interface IUsersServiceFindOneByEmail {
-    email: string;
-  }
+import { CreateUserInput } from '../dto/create-users.input';
 
-  export interface IUsersServiceUpdate {
-    email: string;
-   // updateUserInput: UpdateUserInput;
+export interface IUsersServiceCreate {
+    createUserInput: CreateUserInput;
 }
 
-  export interface IUsersServiceDelete{
+export interface IUsersServiceFindOneByEmail {
+    email: string;
+}
+
+export interface IUsersServiceUpdate {
+    updateUserInput: UpdateUserInput;
+}
+
+export interface IUsersServiceDelete {
     email: string;
     password: string;
-  }
+}

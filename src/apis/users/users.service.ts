@@ -12,6 +12,7 @@ import {
     IUsersServiceCreate,
     IUsersServiceDelete,
     IUsersServiceFindOneByEmail,
+    IUsersServiceUpdate,
 } from './interfaces/users-service.interface';
 import * as bcrypt from 'bcrypt';
 import { IContext } from 'src/commons/interfaces/context';
@@ -27,37 +28,27 @@ export class UsersService {
         return this.usersRepository.findOne({ where: { email } });
     }
 
-    async create({
-        email,
-        password,
-        name,
-        phone,
-    }: IUsersServiceCreate): Promise<User> {
-        const user = await this.findOneByEmail({ email });
+    async create({ createUserInput }: IUsersServiceCreate): Promise<User> {
+        const user = await this.findOneByEmail({
+            email: createUserInput.email,
+        });
         if (user) throw new ConflictException('already using email');
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
         return this.usersRepository.save({
-            email,
+            ...createUserInput,
             password: hashedPassword,
-            name,
-            phone,
         });
     }
 
-    async update({
-        email,
-        password,
-        name,
-        phone,
-    }: IUsersServiceCreate): Promise<User> {
-        const user = await this.findOneByEmail({ email });
+    async update({ updateUserInput }: IUsersServiceUpdate): Promise<User> {
+        const user = await this.findOneByEmail({
+            email: updateUserInput.email,
+        });
 
         const result = this.usersRepository.save({
             ...user,
-            password,
-            name,
-            phone,
+            ...updateUserInput,
         });
         return result;
     }
