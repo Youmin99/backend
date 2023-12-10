@@ -18,6 +18,11 @@ export class BoardsResolver {
         return this.boardsService.findAll({ search, page });
     }
 
+    @Query(() => [Board])
+    fetchBestBoards(): Promise<Board[]> {
+        return this.boardsService.findBest();
+    }
+
     @Query(() => Board)
     fetchBoard(@Args('boardId') boardId: string): Promise<Board> {
         return this.boardsService.findOne({ boardId });
@@ -28,6 +33,16 @@ export class BoardsResolver {
         @Args('search', { nullable: true }) search: string,
     ): Promise<number> {
         return this.boardsService.boardsCount({ search });
+    }
+
+    @Mutation(() => Number)
+    likeBoard(@Args('boardId') boardId: string): Promise<Number> {
+        return this.boardsService.likeCount({ boardId });
+    }
+
+    @Mutation(() => Number)
+    dislikeBoard(@Args('boardId') boardId: string): Promise<Number> {
+        return this.boardsService.dislikeCount({ boardId });
     }
 
     @Mutation(() => Board)

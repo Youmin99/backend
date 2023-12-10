@@ -2,6 +2,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Board } from './entities/board.entity';
 import {
+    IBoardsLike,
     IBoardsServiceCounts,
     IBoardsServiceCreate,
     IBoardsServiceDelete,
@@ -32,6 +33,16 @@ export class BoardsService {
         });
     }
 
+    async findBest(): Promise<Board[]> {
+        return this.boardsRepository.find({
+            take: 5,
+            relations: ['boardAddress'],
+            order: {
+                likeCount: 'ASC', // "DESC"
+            },
+        });
+    }
+
     findOne({ boardId }: IBoardsServiceFindOne): Promise<Board> {
         return this.boardsRepository.findOne({
             where: { _id: boardId },
@@ -43,8 +54,28 @@ export class BoardsService {
         return this.boardsRepository.count({ where: { title: search } });
     }
 
+    async likeCount({ boardId }: IBoardsLike): Promise<number> {
+        const board = await this.findOne({ boardId });
+        board.likeCount += 1;
+        this.boardsRepository.save({
+            ...board,
+        });
+        return board.likeCount;
+    }
+
+    async dislikeCount({ boardId }: IBoardsLike): Promise<number> {
+        const board = await this.findOne({ boardId });
+        board.dislikeCount += 1;
+        this.boardsRepository.save({
+            ...board,
+        });
+        return board.dislikeCount;
+    }
+
     async create({ createBoardInput }: IBoardsServiceCreate): Promise<Board> {
         const { boardAddress, ...product } = createBoardInput;
+        product.likeCount = 0;
+        product.dislikeCount = 0;
 
         const result = await this.boardAddressService.create({
             ...boardAddress,

@@ -24,6 +24,10 @@ export interface IBoardsServiceDelete {
     boardId: string;
 }
 
+export interface IBoardsLike {
+    boardId: string;
+}
+
 export interface IBoardsServiceUpdate {
     boardId: string;
     password: string;

@@ -1,6 +1,6 @@
 // board.entity.ts
 
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { FileUpload } from 'graphql-upload';
 import { BoardAddress } from 'src/apis/boardsAddress/entities/boardAddress.entity';
 import { BoardComment } from 'src/apis/boardsComment/entities/boardComment.entity';
@@ -44,6 +44,14 @@ export class Board {
     @Field(() => String, { nullable: true })
     youtubeUrl: string;
 
+    @Column()
+    @Field(() => Int, { nullable: true })
+    dislikeCount: number;
+
+    @Column()
+    @Field(() => Int, { nullable: true })
+    likeCount: number;
+
     @ManyToOne(() => User)
     @Field(() => User, { nullable: true })
     user: User;
@@ -66,6 +74,7 @@ export class Board {
     @DeleteDateColumn()
     deletedAt: Date;
 
+    @JoinColumn()
     @OneToMany(() => BoardComment, (boardComments) => boardComments.board)
     boardComments: BoardComment[];
 }
