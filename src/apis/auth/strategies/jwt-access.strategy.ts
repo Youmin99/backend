@@ -12,7 +12,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, 'access') {
     }
 
     validate(payload) {
-        console.log(payload); // { sub: askljdfklj-128930djk }
+        console.log(payload);
         return {
             id: payload.sub,
         };

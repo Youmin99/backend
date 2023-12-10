@@ -25,7 +25,11 @@ export class BoardsCommentService {
         const take = 10;
 
         return this.boardCommentsRepository.find({
-            where: { _id: boardId },
+            where: {
+                board: {
+                    _id: boardId,
+                },
+            },
             take,
             skip: (page - 1) * take,
         });
@@ -37,7 +41,9 @@ export class BoardsCommentService {
     }: IBoardsCommentServiceCreate): Promise<BoardComment> {
         return await this.boardCommentsRepository.save({
             ...createBoardCommentInput,
-            boardId,
+            board: {
+                _id: boardId,
+            },
         });
     }
 

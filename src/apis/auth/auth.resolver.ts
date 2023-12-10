@@ -29,7 +29,7 @@ export class AuthResolver {
 
     @UseGuards(GqlAuthGuard('refresh'))
     @Mutation(() => Token)
-    restoreAcessToken(
+    restoreAccessToken(
         @Context() context: IContext, //
     ): Promise<Token> {
         return this.authService.restoreAccessToken({ user: context.req.user });

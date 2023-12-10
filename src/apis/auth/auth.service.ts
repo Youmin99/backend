@@ -42,6 +42,7 @@ export class AuthService {
         this.setRefreshToken({ user, context });
 
         return await this.tokensRepository.save({
+            email,
             accessToken: this.getAccessToken({ user }),
         });
     }
@@ -55,7 +56,11 @@ export class AuthService {
     async restoreAccessToken({
         user,
     }: IAuthServiceRestoreAccessToken): Promise<Token> {
+        const result = this.tokensRepository.findOne({
+            where: { email: user.email },
+        });
         return await this.tokensRepository.save({
+            ...result,
             accessToken: this.getAccessToken({ user }),
         });
     }

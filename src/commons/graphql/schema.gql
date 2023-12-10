@@ -1,0 +1,133 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type BoardAddress {
+  zipcode: String
+  address: String
+  city: String
+  state: String
+}
+
+type BoardComment {
+  _id: String!
+  writer: String!
+  contents: String!
+  rating: Float!
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  _id: String!
+  email: String!
+  name: String!
+  phone: Int!
+}
+
+type Board {
+  _id: String!
+  writer: String!
+  title: String!
+  contents: String!
+  youtubeUrl: String
+  dislikeCount: Int
+  likeCount: Int
+  user: User
+  boardAddress: BoardAddress
+  images: [String!]
+  createdAt: DateTime!
+}
+
+type Token {
+  accessToken: String!
+}
+
+type Query {
+  fetchUserLoggedIn: User!
+  fetchBoards(search: String, page: Int): [Board!]!
+  fetchBestBoards: [Board!]!
+  fetchBoard(boardId: String!): Board!
+  fetchBoardsCount(search: String): Int!
+  fetchBoardComments(boardId: String!, page: Int): [BoardComment!]!
+}
+
+type Mutation {
+  loginUser(email: String!, password: String!): Token!
+  logoutUser: Boolean!
+  restoreAccessToken: Token!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  deleteUser(email: String!, password: String!): Boolean!
+  likeBoard(boardId: String!): Float!
+  dislikeBoard(boardId: String!): Float!
+  createBoard(createBoardInput: CreateBoardInput!): Board!
+  updateBoard(boardId: String!, password: String!, updateBoardInput: UpdateBoardInput!): Board!
+  deleteBoard(boardId: String!): Boolean!
+  createBoardComment(boardId: String!, createBoardCommentInput: CreateBoardCommentInput!): BoardComment!
+  updateBoardComment(boardCommentId: String!, password: String!, updateBoardCommentInput: UpdateBoardCommentInput!): BoardComment!
+  deleteBoardComment(password: String!, boardCommentId: String!): Boolean!
+  uploadFile(file: Upload!): [String!]!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  name: String!
+  phone: Int!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+  name: String
+  phone: Int
+}
+
+input CreateBoardInput {
+  writer: String!
+  title: String!
+  password: String!
+  contents: String!
+  youtubeUrl: String
+  likeCount: Int
+  dislikeCount: Int
+  boardAddress: BoardAddressInput
+  images: [String!]
+}
+
+input BoardAddressInput {
+  zipcode: String
+  address: String
+  city: String
+  state: String
+}
+
+input UpdateBoardInput {
+  title: String!
+  contents: String!
+  youtubeUrl: String
+  likeCount: Int
+  dislikeCount: Int
+  boardAddress: BoardAddressInput
+  images: [String!]
+}
+
+input CreateBoardCommentInput {
+  writer: String!
+  password: String!
+  contents: String!
+  rating: Float!
+}
+
+input UpdateBoardCommentInput {
+  contents: String!
+  rating: Float!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload

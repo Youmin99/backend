@@ -46,7 +46,7 @@ export class BoardsCommentResolver {
     @Query(() => [BoardComment])
     fetchBoardComments(
         @Args('boardId') boardId: string,
-        @Args('page') page: number,
+        @Args({ name: 'page', type: () => Int, nullable: true }) page: number,
     ): Promise<BoardComment[]> {
         return this.boardCommentsService.findAll({ boardId, page });
     }

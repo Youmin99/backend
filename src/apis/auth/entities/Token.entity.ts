@@ -25,6 +25,9 @@ export class Token {
     _id: string;
 
     @Column()
+    email: string;
+
+    @Column()
     @Field(() => String)
     accessToken: string;
 }

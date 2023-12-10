@@ -1,6 +1,7 @@
 // users-service.interface.ts
 
 import { CreateUserInput } from '../dto/create-users.input';
+import { UpdateUserInput } from '../dto/update-users.input';
 
 export interface IUsersServiceCreate {
     createUserInput: CreateUserInput;

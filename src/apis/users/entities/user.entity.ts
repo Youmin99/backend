@@ -29,7 +29,7 @@ export class User {
     name: string;
 
     @Column()
-    @Field(() => Int, { nullable: true })
+    @Field(() => Int)
     phone: number;
 
     @CreateDateColumn()

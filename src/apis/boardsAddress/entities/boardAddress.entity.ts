@@ -17,5 +17,9 @@ export class BoardAddress {
 
     @Column()
     @Field(() => String, { nullable: true })
-    addressDetail: string;
+    city: string;
+
+    @Column()
+    @Field(() => String, { nullable: true })
+    state: string;
 }

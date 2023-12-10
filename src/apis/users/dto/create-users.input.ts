@@ -13,6 +13,6 @@ export class CreateUserInput {
     @Field(() => String)
     name: string;
 
-    @Field(() => Int, { nullable: true })
+    @Field(() => Int)
     phone: number;
 }
