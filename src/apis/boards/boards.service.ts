@@ -30,6 +30,9 @@ export class BoardsService {
             relations: ['boardAddress'],
             take,
             skip: (page - 1) * take,
+            order: {
+                createdAt: 'DESC', // 'ASC'
+            },
         });
     }
 
@@ -38,7 +41,7 @@ export class BoardsService {
             take: 5,
             relations: ['boardAddress'],
             order: {
-                likeCount: 'ASC', // "DESC"
+                likeCount: 'DESC', // 'ASC'
             },
         });
     }
